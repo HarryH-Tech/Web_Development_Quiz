@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
 import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import md5 from 'md5';
 import firebase from '../../firebase';
 
 
 const Register = () => {
-	
+		
 	//Set login initial state values
 	const [loginDetails, setLoginDetails] = useState({
 		username: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
+		usersRef: firebase.database().ref('users')
 	});
+	
+
 	
 	//Set other app state values
 	const [appDetails, setAppDetails] = useState({
 		errors: "",
 		loading: false
 	});
+	
+	//Destructure state values
+	const { username, email, password, confirmPassword, usersRef } = loginDetails;
+	const { errors, loading } = appDetails;
 	
 	//Validate Form Submission called in handleSubmit Function
 	const validateForm = () => {
@@ -35,17 +43,21 @@ const Register = () => {
 			setAppDetails({errors: "Password is invalid. It must be at least 6 letters long and both passwords must match."});
 			return false;
 		}
+		
+		else {
+			return true;
+		}
 	}
 	
 	//Check if all form fields are filled in, called in validateForm function
 	const isFormEmpty = ({ username, email, password, confirmPassword }) => {
-		return !loginDetails.username.length || !loginDetails.email.length || !loginDetails.password.length || 
+		return !username.length || !email.length || !password.length || 
 		!confirmPassword.length;
 	}
 	
 	// Validate password, called in validateForm function
 	const isPasswordValid = ({password, confirmPassword}) => {
-		if(loginDetails.password.length < 6 || loginDetails.confirmPassword.length < 6) {
+		if(password.length < 6 || confirmPassword.length < 6) {
 			return false;
 		}
 		else if(password !== confirmPassword) {
@@ -57,24 +69,62 @@ const Register = () => {
 	}
 	
 	
-	//Display Errors
-	const displayErrors = errors => errors.map((error, i) => (
-		<p key={i}>{error.message}</p>
-	))
 	
 	
+	//Save User to DB, called in handleSubmit function
+	const saveUser = createdUser => {
+		return usersRef.child(createdUser.user.uid).set({
+			name: createdUser.user.displayName,
+			avatar: createdUser.user.photoURL
+		});
+	};
 	
 	
+	// handle input errors called in handleSubmit function
+	const handleInputError = (errors, inputName) => {
+		return errors.some(error => (
+			error.message.toLowerCase().includes(inputName)
+		) ? "error" : '')
+	};
 	
-	const handleSubmit = () => {
-		validateForm();
+	
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if(validateForm()) {
+			console.log('form valid');
+			setAppDetails({errors: "", loading: true});
+			firebase			
+				.auth()
+				.createUserWithEmailAndPassword(email, password)
+				.then(createdUser => {
+					console.log(createdUser);
+					createdUser.user.updateProfile({
+						displayName: username,
+						photoURL: `https://gravatar.com/avatar/${md5(createdUser.user.email)}?d=identicon`
+					})
+					.then(() => {
+						saveUser(createdUser).then(() => {
+							console.log("User Saved");
+					})
+				})
+				
+				.catch(err => {
+					console.error(err);
+					setAppDetails({errors: errors.concat(err), loading: false})
+				})
+			})
+			.catch(err => {
+				console.error(err);
+				setAppDetails({errors: errors.concat(err), loading: false})
+			})
+			
+		}
 	}
 	
 	
-	//Save User to DB
+	
 
 	
-	const { username, email, password, confirmPassword } = loginDetails;
 	return (
 	
 	
@@ -110,8 +160,8 @@ const Register = () => {
 					
 					
 					<Button
-						disabled={appDetails.loading}
-						className={appDetails.loading ? 'loading' : ''}
+						disabled={loading}
+						className={loading ? 'loading' : ''}
 						color="blue"
 						fluid
 						size="large"
@@ -120,14 +170,24 @@ const Register = () => {
 					</Button>
 					</Segment>
 					</Form>
+					{errors && (
+						<Message error>
+							<h3>Error:</h3>
+							{errors}
+						</Message>
+					)}
 					
 					
 					<Message>
-						Already a User?{" "}
-						<Link to="/login">
-							Login
+						Already a User?<br /><br />
+						<Link style={{ color: '#FFF' }} to="/login">
+							<Button 
+								compact
+								color="green"
+							>
+									Login	
+							</Button>
 						</Link>
-					
 					</Message>
 					
 				
