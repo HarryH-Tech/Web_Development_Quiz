@@ -3,9 +3,10 @@ import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-
 import { Link } from 'react-router-dom';
 import md5 from 'md5';
 import firebase from '../../firebase';
+import { withRouter } from "react-router";
 
 
-const Register = () => {
+const Register = ({ history }) => {
 		
 	//Set login initial state values
 	const [loginDetails, setLoginDetails] = useState({
@@ -13,7 +14,7 @@ const Register = () => {
 		email: '',
 		password: '',
 		confirmPassword: '',
-		usersRef: firebase.database().ref('users')
+		usersRef: firebase.database().ref('users1')
 	});
 	
 
@@ -106,13 +107,15 @@ const Register = () => {
 						saveUser(createdUser).then(() => {
 							console.log("User Saved");
 					})
+					history.push("/");
+					
 				})
 				
 				.catch(err => {
 					console.error(err);
 					setAppDetails({errors: errors.concat(err), loading: false})
 				})
-			})
+			}, [history])
 			.catch(err => {
 				console.error(err);
 				setAppDetails({errors: errors.concat(err), loading: false})
@@ -197,7 +200,7 @@ const Register = () => {
 	
 }
 
-export default Register;
+export default withRouter(Register);
 		
 	
 	

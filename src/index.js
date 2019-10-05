@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import firebaseAuth from './firebase';
 
+import { AuthProvider } from './components/Context/Auth';
 
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -10,10 +11,12 @@ import App from './components/App';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 
+import PrivateRoute from "./PrivateRoute";
+
 const Root = () => {
 	return (
 			<Switch>
-				<Route exact path="/" component={App} />
+				<PrivateRoute exact path="/" component={App} />
 				<Route path="/register" component={Register} />
 				<Route path="/login" component={Login} />
 			</Switch>
@@ -23,6 +26,9 @@ const Root = () => {
 
 
 ReactDOM.render(
+	<AuthProvider>
 		<Router>
 			<Root />
-		</Router>, document.getElementById('root'));
+		</Router>
+	</AuthProvider>
+, document.getElementById('root'));

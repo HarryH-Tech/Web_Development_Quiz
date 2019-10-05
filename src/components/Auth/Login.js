@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase';
+import { withRouter, Redirect } from 'react-router';
+import { AuthContext } from '../Context/Auth';
 
-const Login = () => {
+
+const Login = ({ history }) => {
 	
 	//Create and destructure state values
 	const [userDetails, setUserDetails] = useState({
@@ -30,6 +33,11 @@ const Login = () => {
 	))
 	
 	
+		const { currentUser } = useContext(AuthContext);
+	
+	if(currentUser) {
+		return <Redirect to="/" />;
+	}
 	
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -40,7 +48,9 @@ const Login = () => {
 				.signInWithEmailAndPassword(email, password)
 				.then(signedInUser => {
 					console.log(signedInUser)
+					history.push("/")
 				})
+				
 				.catch(err => {
 					console.error(err)
 					setAppDetails({
