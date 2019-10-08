@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase';
-import { withRouter, Redirect } from 'react-router';
+import { Redirect } from 'react-router';
 import { AuthContext } from '../Context/Auth';
 
 
@@ -33,7 +33,7 @@ const Login = ({ history }) => {
 	))
 	
 	
-		const { currentUser } = useContext(AuthContext);
+	const { currentUser } = useContext(AuthContext);
 	
 	if(currentUser) {
 		return <Redirect to="/" />;
@@ -96,7 +96,7 @@ const Login = ({ history }) => {
 							fluid 
 							size="large"
 							icon
-							icon labelPosition="left"
+							labelPosition="left"
 						>
 							<Icon name="sign in" />
 							Log In

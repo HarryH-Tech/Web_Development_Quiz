@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createContext } from 'react';
 import firebase from '../../firebase';
-
+	
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -21,5 +21,6 @@ export const AuthProvider = ({ children }) => {
 		</AuthContext.Provider>
 	)
 }
+
 
 		

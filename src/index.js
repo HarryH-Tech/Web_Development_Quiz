@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import firebaseAuth from './firebase';
 
 import { AuthProvider } from './components/Context/Auth';
 
@@ -13,7 +12,10 @@ import Login from './components/Auth/Login';
 
 import PrivateRoute from "./PrivateRoute";
 
+	
 const Root = () => {
+	
+	
 	return (
 			<Switch>
 				<PrivateRoute exact path="/" component={App} />
