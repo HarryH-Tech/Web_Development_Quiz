@@ -1,8 +1,6 @@
 import React, { useContext, useReducer } from 'react';
 import './App.css';
-import firebase from '../firebase';
-import { Segment, Button, Header } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Segment, Button, Icon, Grid, Divider } from 'semantic-ui-react';
 
 //Custom Component Imports
 import { AuthContext } from './Context/Auth';
@@ -11,6 +9,7 @@ import Question from './Question';
 import Answers from './Answers';
 import Timer from './Timer';
 import WelcomePage from './WelcomePage';
+import Navbar from './Navbar';
 
 const SET_CURRENT_ANSWER = "SET_CURRENT_ANSWER";
 const SET_CURRENT_QUESTION = "SET_CURRENT_QUESTION";
@@ -19,6 +18,7 @@ const SET_ANSWERS = "SET_ANSWERS";
 const SET_SHOW_RESULTS = "SET_SHOW_RESULTS";
 const SET_START_QUIZ = "SET_START_QUIZ";
 const SET_TIMER = "SET_TIMER";
+const SET_CORRECT_ANSWERS = "SET_CORRECT_ANSWERS";
 
 
 
@@ -73,8 +73,12 @@ const quizReducer = (state, action) => {
 				isTimerActive: true,
 				timerFinished: action.timerFinished
 			}
-			
-			
+		
+		case SET_CORRECT_ANSWERS: 
+			return {
+				...state,
+				correctAnswers: action.correctAnswers
+			}
 			
 			
 			default:
@@ -94,9 +98,8 @@ const App = () => {
 		showResults: false,
 		error: '',
 		startQuiz: false,
-		initialTime: 150,
-		isTimerActive: false,
-		timerFinished: false
+		timerFinished: false,
+		correctAnswers: 0
 	}
 	
 	const [state, dispatch] = useReducer(quizReducer, initialState);
@@ -107,9 +110,8 @@ const App = () => {
 		showResults, 
 		error, 
 		startQuiz,
-		initialTime,
-		isTimerActive,
-		timerFinished
+		timerFinished,
+		correctAnswers
 	} = state;
 		
 		
@@ -120,39 +122,47 @@ const App = () => {
 	const questions = [
 		{
 			number: '1',
-			question: "Quelle ____ est-il?",
-			a: "vie",
-			b: "bien",
-			c: "heure",
-			correct: "c"
+			question: "What is HTTP?",
+			a: "A programming language.",
+			b: "A transfer protocol.",
+			c: "A CSS framework.",
+			correct: "b"
 		},
 		{
 			number: '2',
-			question: "____ est la boîte?",
-			a: "Ensuite",
-			b: "Où",
-			c: "Pourquoi",
-			correct: "b"
-		}		
+			question: "Who Invented Javascript?",
+			a: "Brendan Eich",
+			b: "Bjarne Stroustrup",
+			c: "Guido van Rossum",
+			correct: "a"
+		},
+		{
+			number: '3',
+			question: "Which of thes is not a Javascript array method?",
+			a: ".map()",
+			b: ".shift()",
+			c: ".implode()",
+			correct: "c"
+		}				
 	];
 	
-	
-	const showQuiz = () => {
-		dispatch({ type:SET_START_QUIZ, startQuiz: true });	
-	}
+
 	
 	const showError = () => {
 		if(!error) {
 			return ;
 		}
 		
-		return <div>{error}</div>;
+		return (
+			<Divider horizontal>
+				<div style={{color: 'red', fontWeight: 'bold'}}>
+					{error}
+				</div>
+			</Divider>
+		)
 	};
 	
-	//console.log(userContext.currentUser);
-	const question=questions[currentQuestion]
-	
-	
+	const question=questions[currentQuestion]	
 	
 	const handleClick = (e) => {
 		dispatch({ type:SET_CURRENT_ANSWER, currentAnswer: e.target.value });	
@@ -161,6 +171,8 @@ const App = () => {
 	
 	const next = () => {
 		const answer = {questionId: question.number, answer: currentAnswer}
+	
+		
 		if(!currentAnswer) {
 			dispatch({ type:SET_ERROR, error: 'Please Select An Option' });	
 			return;
@@ -169,7 +181,12 @@ const App = () => {
 		answers.push(answer);
 		dispatch({ type:SET_ANSWERS, answers: answers });	
 		dispatch({ type:SET_CURRENT_ANSWER, currentAnswer: '' });
+		
+		 
 		if(currentQuestion + 1  < questions.length) {
+			if(answer.answer === question.correct) {
+				dispatch({ type:SET_CORRECT_ANSWERS, correctAnswers: correctAnswers + 1 });	
+			}
 			dispatch({ type:SET_CURRENT_QUESTION, currentQuestion: currentQuestion + 1 });	
 			return;
 		}
@@ -184,17 +201,43 @@ const App = () => {
 		);
 		
 			return (
-				<div key={question.number}>{question.question} - {showResultMark(question, answer)}</div>
+				<Segment size="huge">
+					<div key={question.number} style={{textAlign:'center'}}>
+						{question.question} - {showResultMark(question, answer)}<br /><br />
+					<br />
+					</div>
+				</Segment>
 			)
 		})
-		
 	};
 	
+	
 	const showResultMark = (question, answer) => {
+
 		if(question.correct === answer.answer) {
-			return <span className="correct">Correct</span>			
+			let answerKey = answer.answer;
+			return (
+				<div key={question.number}>
+					<strong>
+						You answered:  {question[answerKey]} <br /><br /><br />
+					</strong>
+					<span className="correct">
+						<Icon name="thumbs up" size="small"/> Correct
+					</span>	
+				</div>
+				
+			)
 		}
-		return <span className="incorrect">Incorrect</span>	
+		return (
+			<div key={question.number}>
+				<strong>
+					Sorry, you got this question wrong. <br /><br /><br />
+				</strong>
+				<span className="incorrect">
+					<Icon name="thumbs down" size="small"/> Incorrect
+				</span>	
+			</div>
+		)
 	}
 	
 	const restartQuiz = () => {
@@ -213,22 +256,34 @@ const App = () => {
 	
 	const quizTimerFinished = () => {
 		dispatch({ type:SET_TIMER, timerFinished: true });		
-		
 	};
 	
 	
 	if(showResults || timerFinished) {
 		return (
 			<div className="container">
-			<ul>
 				{showResultsData()}
-			</ul>
-				<button 
-					className="btn btn-primary"
-					onClick={restartQuiz}
-				>
-					Restart Quiz
-				</button>
+
+			<Segment size="huge" style={{textAlign: 'center'}}>
+				You got {correctAnswers} out of {questions.length} right.<br /><br />
+					{ correctAnswers > 10 ? (
+						<Icon name="smile" size="large"/>
+					) : ( 
+						<Icon name="meh" size="large"/>
+					)}
+			</Segment>
+			<Grid>
+				<Grid.Column textAlign="center"> 
+					<Button 
+						color="green"
+						onClick={restartQuiz}
+					>
+						Restart Quiz
+					</Button>
+					<br />
+				</Grid.Column>
+			</Grid>
+			
 			</div>
 		)	
 	}
@@ -247,30 +302,7 @@ const App = () => {
 	else {
 		return (
 			<>
-				<Segment inverted>
-					<Header as="h1" inverted color="blue">
-					Quiz App
-					<Button 
-						onClick={() => firebase.auth().signOut()}
-						floated="right"
-						color="red"
-					>
-						Sign Out
-					</Button>
-					
-					<Link to="/account_details">
-						<Button
-							color="blue"
-							floated="right"
-							style={{marginRight: '1em'}}
-						>
-							Account Details
-						</Button>
-					</Link>
-					</Header>
-				</Segment>
-				
-				<h1>Hi {currentUser.displayName}. Welcome to my French Quiz!</h1>
+				<Navbar />		
 				<Timer 
 					timerFinished={timerFinished}
 					quizTimerFinished={quizTimerFinished}
@@ -294,13 +326,17 @@ const App = () => {
 						percentUploaded={(currentQuestion / questions.length) * 100}
 					/>
 					
-					<button 
-						className="btn btn-primary"
-						onClick={next}
-					>
-						Submit Answer
-					</button>
-					
+					<Grid>
+						<Grid.Column textAlign="center"> 
+							<Button 
+								onClick={next}
+								color="green"
+								size='huge'
+							>
+								Submit Answer
+							</Button>
+						</Grid.Column>
+					</Grid>
 				</Segment>				
 			</>
 	)

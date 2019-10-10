@@ -3,3 +3,18 @@ html, body, .app {
 	background: #EEE;
 	padding: 1em;
 }
+
+
+.correct {
+	color: white;
+	background-color: green;
+	padding: 0.6em;
+	border-radius: 8px;
+}
+
+.incorrect {
+	color: white;
+	background-color: red;
+	padding: 1em;
+	border-radius: 8px;
+}

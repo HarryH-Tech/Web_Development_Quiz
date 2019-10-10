@@ -5,7 +5,7 @@ const ProgressBar = ({ current, total, percentUploaded }) => {
 	return (
 		<>
 			<h3>Question {current} of {total}</h3>
-			<Progress percent={percentUploaded} progress />
+			<Progress percent={percentUploaded.toFixed()} progress />
 		</>
 	
 	)

@@ -9,7 +9,7 @@ import { withRouter } from "react-router";
 const Register = ({ history }) => {
 		
 	//Set login initial state values
-	const [loginDetails, setLoginDetails] = useState({
+	const [userDetails, setLoginDetails] = useState({
 		username: '',
 		email: '',
 		password: '',
@@ -26,20 +26,20 @@ const Register = ({ history }) => {
 	});
 	
 	//Destructure state values
-	const { username, email, password, confirmPassword, usersRef } = loginDetails;
+	const { username, email, password, confirmPassword, usersRef } = userDetails;
 	const { errors, loading } = appDetails;
 	
 	//Validate Form Submission called in handleSubmit Function
 	const validateForm = () => {
 		console.log('validateForm');
 		
-		if(isFormEmpty(loginDetails)) {
+		if(isFormEmpty(userDetails)) {
 			setAppDetails({errors: "Please fill in all fields"});
 			console.log('fill in all fields')
 			return false;
 		}
 		
-		else if(!isPasswordValid(loginDetails)) {
+		else if(!isPasswordValid(userDetails)) {
 			console.log('password invalid')
 			setAppDetails({errors: "Password is invalid. It must be at least 6 letters long and both passwords must match."});
 			return false;
@@ -143,22 +143,22 @@ const Register = ({ history }) => {
 				<Form size="large" onSubmit={handleSubmit}>
 					<Segment stacked>
 						<Form.Input icon="user" iconPosition="left" name="username"
-						placeholder="Username" onChange={(e) => setLoginDetails({...loginDetails, [e.target.name]: e.target.value})}
+						placeholder="Username" onChange={(e) => setLoginDetails({...userDetails, [e.target.name]: e.target.value})}
 						value={username} type="text">
 						</Form.Input>
 						
 						<Form.Input icon="mail" iconPosition="left" name="email"
-						placeholder="Email" onChange={(e) => setLoginDetails({...loginDetails, [e.target.name]: e.target.value})}
+						placeholder="Email" onChange={(e) => setLoginDetails({...userDetails, [e.target.name]: e.target.value})}
 						value={email} type="email">
 						</Form.Input>
 						
 						<Form.Input icon="lock" iconPosition="left" name="password"
-						placeholder="Password" onChange={(e) => setLoginDetails({...loginDetails, [e.target.name]: e.target.value})}
+						placeholder="Password" onChange={(e) => setLoginDetails({...userDetails, [e.target.name]: e.target.value})}
 						value={password} type="password">
 						</Form.Input>
 						
 						<Form.Input icon="plus circle" iconPosition="left" name="confirmPassword"
-						placeholder="Confirm Password" onChange={(e) => setLoginDetails({...loginDetails, [e.target.name]: e.target.value})}
+						placeholder="Confirm Password" onChange={(e) => setLoginDetails({...userDetails, [e.target.name]: e.target.value})}
 						value={confirmPassword} type="password">
 						</Form.Input>
 					
