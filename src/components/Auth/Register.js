@@ -79,16 +79,7 @@ const Register = ({ history }) => {
 			avatar: createdUser.user.photoURL
 		});
 	};
-	
-	
-	/* handle input errors called in handleSubmit function
-	const handleInputError = (errors, inputName) => {
-		return errors.some(error => (
-			error.message.toLowerCase().includes(inputName)
-		) ? "error" : '')
-	};
-	*/
-	
+
 	
 	const handleSubmit = (e) => {
 		e.preventDefault();

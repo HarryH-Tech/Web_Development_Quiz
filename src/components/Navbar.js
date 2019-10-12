@@ -1,13 +1,26 @@
-import React from 'react';
-import { Segment, Header, Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Segment, Header, Button, Modal, Icon, Label } from 'semantic-ui-react';
 import firebase from '../firebase';
-import AccountDetails from './AccountDetails';
- 
+import { SET_OPEN_MODAL, SET_CLOSE_MODAL } from './Context/reducers/types';
+import QuizContext from './Context/QuizContext';
+
+	
 const Navbar = () => {
+	const { state, dispatch } = useContext(QuizContext);
+	const { primaryColor } = state;
+	
+	const openModal = () => {
+		dispatch({ type:SET_OPEN_MODAL, action: true });
+		console.log(openModal)		
+	}
+
+
+	
+	
+
 	return (
-		<Segment inverted>
-			<Header as="h1" inverted color="blue">
+		<Segment style={{backgroundColor: primaryColor}}>
+			<Header as="h1" inverted>
 			Quiz App
 			<Button 
 				onClick={() => firebase.auth().signOut()}
@@ -16,25 +29,18 @@ const Navbar = () => {
 			>
 				Sign Out
 			</Button>
-			
-			<Link to="/account_details">
-				<Button
-					color="blue"
-					floated="right"
-					style={{marginRight: '1em'}}
-				>
-					Account Details
-				</Button>
-			</Link>
-			<Link to="/">
-				<Button
-					color="green"
-					floated="right"
-					style={{marginRight: '1em'}}
-				>
-					Quiz
-				</Button>
-			</Link>
+
+			<Button
+				color="yellow"
+				floated="right"
+				style={{marginRight: '1em'}}
+				onClick={openModal}
+			>
+				Change The Navbar Color
+			</Button>
+				
+				
+				
 			</Header>
 		</Segment>
 	)

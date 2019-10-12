@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Message, Icon } from 'semantic-ui-react';
+import QuizContext from '../Context/QuizContext';
+import { SET_TIMER } from '../Context/reducers/types';
 
-const Timer = ({ timerFinished, quizTimerFinished }) => {
-	const [seconds, setSeconds] = useState(20);
+const Timer = () => {
+	const { state, dispatch } = useContext(QuizContext);
+	let { timerFinished } = state;
+	
+	const [seconds, setSeconds] = useState(2000);
 	const [isActive, setIsActive] = useState(false);
 
+	const quizTimerFinished = () => {
+		dispatch({ type:SET_TIMER, timerFinished: true });		
+	};
+	
 	useEffect(() => {
 		setIsActive(true);
 		let interval = null;
