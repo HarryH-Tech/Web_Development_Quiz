@@ -1,20 +1,25 @@
-html, body, .app {
-	height: 100vh;
-	background: #EEE;
-	padding: 1em;
+html,
+body,
+.app {
+  height: 100vh;
+  background: #eee;
+  padding: 1em;
 }
 
-
 .correct {
-	color: white;
-	background-color: green;
-	padding: 0.6em;
-	border-radius: 8px;
+  color: white;
+  background-color: green;
+  padding: 0.6em;
+  border-radius: 8px;
 }
 
 .incorrect {
-	color: white;
-	background-color: red;
-	padding: 1em;
-	border-radius: 8px;
+  color: white;
+  background-color: red;
+  padding: 1em;
+  border-radius: 8px;
+}
+
+.selected {
+  border: 2px solid #5be293 !important;
 }
