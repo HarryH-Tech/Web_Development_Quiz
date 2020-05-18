@@ -104,15 +104,13 @@ const Register = ({ history }) => {
               })
 
               .catch((err) => {
-                console.error(err);
-                setAppDetails({ errors: errors.concat(err), loading: false });
+                setAppDetails({ errors: err.message, loading: false });
               });
           },
           [history]
         )
         .catch((err) => {
-          console.error(err);
-          setAppDetails({ errors: errors.concat(err), loading: false });
+          setAppDetails({ errors: err.message, loading: false });
         });
     }
   };

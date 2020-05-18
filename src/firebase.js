@@ -1,19 +1,18 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/storage';
-
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import "firebase/storage";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-	apiKey: "AIzaSyCTZrYihrJ_1l5hLZO2vVOw_tlPRgcdDFY",
-	authDomain: "french-quiz-b8132.firebaseapp.com",
-	databaseURL: "https://french-quiz-b8132.firebaseio.com",
-	projectId: "french-quiz-b8132",
-	storageBucket: "gs://french-quiz-b8132.appspot.com",
-	messagingSenderId: "397007280430",
-	appId: "1:397007280430:web:a906708f57222bda3fc2bf",
-	measurementId: "G-83JDQFSSV1"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
