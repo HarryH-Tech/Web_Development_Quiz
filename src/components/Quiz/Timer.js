@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Message, Icon } from "semantic-ui-react";
-import QuizContext from "../Context/QuizContext";
-import { SET_TIMER } from "../Context/reducers/types";
+import React, { useState, useEffect, useContext } from 'react';
+import { Message, Icon } from 'semantic-ui-react';
+import QuizContext from '../Context/QuizContext';
+import { SET_TIMER } from '../Context/reducers/types';
 
 const Timer = () => {
   const { state, dispatch } = useContext(QuizContext);
@@ -30,8 +30,8 @@ const Timer = () => {
   }, [isActive, seconds]);
 
   return (
-    <Message icon color={seconds > 5 ? "green" : "red"}>
-      <div style={{ width: "35%", margin: "auto", textAlign: "center" }}>
+    <Message icon color={seconds > 5 ? 'green' : 'red'}>
+      <div style={{ width: '35%', margin: 'auto', textAlign: 'center' }}>
         <Icon size="big" name="clock" />
         <Message.Content>{seconds} Seconds Remaining</Message.Content>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from 'react';
 import {
   Grid,
   Form,
@@ -7,21 +7,22 @@ import {
   Header,
   Message,
   Icon,
-} from "semantic-ui-react";
+} from 'semantic-ui-react';
+// import { browserSessionPersistence } from 'firebase/auth';
 
 //Import Router Components
-import { Link } from "react-router-dom";
-import { Redirect } from "react-router";
+import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 //DB and Auth Imports
-import firebase from "../../firebase";
-import { AuthContext } from "../Context/Auth";
+import firebase from '../../firebase';
+import { AuthContext } from '../Context/Auth';
 
 const Login = ({ history }) => {
   //Create and destructure state values
   const [userDetails, setUserDetails] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const [appDetails, setAppDetails] = useState({
@@ -34,12 +35,11 @@ const Login = ({ history }) => {
 
   //If error, specify which input field caused the error
   const handleInputError = (errors, inputName) => {
-    console.log(errors);
     return errors.some((error) =>
       error.message.toLowerCase().includes(inputName)
     )
-      ? "error"
-      : "";
+      ? 'error'
+      : '';
   };
 
   //Show error message
@@ -63,7 +63,7 @@ const Login = ({ history }) => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((signedInUser) => {
-          history.push("/");
+          history.push('/');
         })
 
         .catch((err) => {
@@ -82,7 +82,15 @@ const Login = ({ history }) => {
     <Grid textAlign="center" verticalAlign="middle" className="app">
       <Grid.Column style={{ maxWidth: 600, height: 400 }}>
         <Header as="h1" color="blue" textAlign="center">
-          Login
+          <div style={{ textAlign: 'center' }}>
+            <Icon float="left" name="chrome" color="blue" />
+            <Icon float="right" name="question" color="blue" />
+            <Icon float="left" name="html5" color="blue" />
+          </div>
+          Web Development Quiz
+        </Header>
+        <Header as="h2" color="black" textAlign="center">
+          {'  '}Login
         </Header>
 
         <Form size="large" onSubmit={handleSubmit}>
@@ -102,7 +110,7 @@ const Login = ({ history }) => {
               }
               type="email"
               value={email}
-              className={handleInputError(errors, "email")}
+              className={handleInputError(errors, 'email')}
             />
 
             <Form.Input
@@ -120,12 +128,12 @@ const Login = ({ history }) => {
               }
               type="password"
               value={password}
-              className={handleInputError(errors, "password")}
+              className={handleInputError(errors, 'password')}
             />
 
             <Button
               disabled={loading}
-              className={loading ? "loading" : ""}
+              className={loading ? 'loading' : ''}
               color="green"
               fluid
               size="large"
@@ -147,7 +155,7 @@ const Login = ({ history }) => {
           Don't Have an Account?
           <br />
           <br />
-          <Link style={{ color: "#FFF" }} to="/register">
+          <Link style={{ color: '#FFF' }} to="/register">
             <Button compact color="blue">
               Register Here
             </Button>

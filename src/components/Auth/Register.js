@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Grid,
   Form,
@@ -8,24 +8,24 @@ import {
   Message,
   Icon,
   Progress,
-} from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import md5 from "md5";
-import firebase from "../../firebase";
-import { withRouter } from "react-router";
+} from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import md5 from 'md5';
+import firebase from '../../firebase';
+import { withRouter } from 'react-router';
 
 const Register = ({ history }) => {
   //Create and destructure state values
   const [userDetails, setUserDetails] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    usersRef: firebase.database().ref("users1"),
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    usersRef: firebase.database().ref('users1'),
   });
 
   const [appDetails, setAppDetails] = useState({
-    errors: "",
+    errors: '',
     loading: false,
     showTooltip: false,
   });
@@ -36,17 +36,17 @@ const Register = ({ history }) => {
   //Validate Form Submission called in handleSubmit Function
   const validateForm = () => {
     if (isFormEmpty(userDetails)) {
-      setAppDetails({ errors: "Please fill in all fields" });
+      setAppDetails({ errors: 'Please fill in all fields' });
       return false;
     } else if (!isPasswordValid(userDetails)) {
       setAppDetails({
         errors:
-          "Password is invalid. It must be at least 6 letters long and both passwords must match.",
+          'Password is invalid. It must be at least 6 letters long and both passwords must match.',
       });
       return false;
     } else if (passwordStrength < 50) {
       setAppDetails({
-        errors: "Please ensure the password strength is above 50%.",
+        errors: 'Please ensure the password strength is above 50%.',
       });
     } else {
       return true;
@@ -85,7 +85,7 @@ const Register = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      setAppDetails({ errors: "", loading: true });
+      setAppDetails({ errors: '', loading: true });
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -100,7 +100,7 @@ const Register = ({ history }) => {
               })
               .then(() => {
                 saveUser(createdUser).then(() => {});
-                history.push("/");
+                history.push('/');
               })
 
               .catch((err) => {
@@ -147,12 +147,15 @@ const Register = ({ history }) => {
     <Grid textAlign="center" verticalAlign="middle" className="app">
       <Grid.Column style={{ maxWidth: 600, height: 550 }}>
         <Header as="h1" color="blue" textAlign="center">
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <Icon float="left" name="chrome" color="blue" />
             <Icon float="right" name="question" color="blue" />
             <Icon float="left" name="html5" color="blue" />
           </div>
-          {"  "}Welcome To The Web Development Quiz{"  "}
+          Web Development Quiz
+        </Header>
+        <Header as="h2" color="black" textAlign="center">
+          {'  '}Register
         </Header>
 
         {/* Input Fields */}
@@ -200,7 +203,7 @@ const Register = ({ history }) => {
               onMouseLeave={toggleOpenTooltip}
             ></Form.Input>
             <div
-              style={showTooltip ? { display: "block" } : { display: "none" }}
+              style={showTooltip ? { display: 'block' } : { display: 'none' }}
             >
               <ul>
                 <strong>Passwords Should:</strong>
@@ -213,7 +216,7 @@ const Register = ({ history }) => {
             <Progress
               progress
               percent={passwordStrength}
-              color={passwordStrength > 50 ? "green" : "red"}
+              color={passwordStrength > 50 ? 'green' : 'red'}
             >
               Password Strength
             </Progress>
@@ -235,7 +238,7 @@ const Register = ({ history }) => {
 
             <Button
               disabled={loading}
-              className={loading ? "loading" : ""}
+              className={loading ? 'loading' : ''}
               color="blue"
               fluid
               size="large"
@@ -251,11 +254,11 @@ const Register = ({ history }) => {
           </Message>
         )}
 
-        <Message style={{ marginBottom: "0.5rem" }}>
+        <Message style={{ marginBottom: '0.5rem' }}>
           Already a User?
           <br />
           <br />
-          <Link style={{ color: "#FFF" }} to="/login">
+          <Link style={{ color: '#FFF' }} to="/login">
             <Button compact color="green">
               Login
             </Button>

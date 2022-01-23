@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import Answer from "./Answer";
-import { Segment } from "semantic-ui-react";
-import QuizContext from "../Context/QuizContext";
+import React, { useContext } from 'react';
+import Answer from './Answer';
+import { Segment } from 'semantic-ui-react';
+import QuizContext from '../Context/QuizContext';
 
 const Answers = () => {
   const { state, dispatch } = useContext(QuizContext);
@@ -10,13 +10,13 @@ const Answers = () => {
 
   return (
     <>
-      <div style={{ width: "100%" }}>
+      <div style={{ width: '100%' }}>
         <Segment.Group horizontal>
           <Segment textAlign="center">
             <Answer
               letter="a"
               dispatch={dispatch}
-              selected={currentAnswer === "a"}
+              selected={currentAnswer === 'a'}
               answer={answer.a}
             />
           </Segment>
@@ -25,9 +25,9 @@ const Answers = () => {
             <Answer
               letter="b"
               dispatch={dispatch}
-              selected={currentAnswer === "b"}
+              selected={currentAnswer === 'b'}
               answer={answer.b}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
             />
           </Segment>
 
@@ -35,7 +35,7 @@ const Answers = () => {
             <Answer
               letter="c"
               dispatch={dispatch}
-              selected={currentAnswer === "c"}
+              selected={currentAnswer === 'c'}
               answer={answer.c}
             />
           </Segment>

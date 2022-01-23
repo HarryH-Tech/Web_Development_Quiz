@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { Progress } from "semantic-ui-react";
-import QuizContext from "../Context/QuizContext";
+import React, { useContext } from 'react';
+import { Progress } from 'semantic-ui-react';
+import QuizContext from '../Context/QuizContext';
 
 const ProgressBar = () => {
   const { state } = useContext(QuizContext);
@@ -15,7 +15,7 @@ const ProgressBar = () => {
       <h3>
         Question {currentQuestion + 1} of {questionList.length}
       </h3>
-      <Progress percent={percentUploaded} progress />
+      <Progress percent={percentUploaded} success />
     </>
   );
 };

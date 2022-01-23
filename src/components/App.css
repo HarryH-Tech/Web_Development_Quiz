@@ -23,3 +23,18 @@ body,
 .selected {
   border: 2px solid #5be293 !important;
 }
+
+#answer-button {
+}
+
+@media screen and (max-width: 530px) {
+  #answer-button {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  #answer-button {
+    font-size: 0.6rem;
+  }
+}
